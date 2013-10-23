@@ -25,6 +25,7 @@ define(function(require) {
 		/* ------------------------------------------------------------------ */
 
 		task: undefined, //typeof string
+		useShimWorker: false, //for debugging purposes
 
 		/* This function sends given data to the worker.
 		/* @param data is the data to be send. */
@@ -50,6 +51,7 @@ define(function(require) {
 		_initialize: function(options) {
 			this._options = options || {};
 			this.task = this._options.task || this.task;
+			this.useShimWorker = this._options.useShimWorker || this.useShimWorker;
 			this._bus = new Utils.EventBus();
 		},
 
@@ -87,8 +89,9 @@ define(function(require) {
 			var url = window.URL || window.webkitURL;
 			return	window.Worker &&
 					window.Blob &&
-					typeof url === 'function' &&
-					typeof url.createObjectURL === 'function';
+					(typeof url === 'function' || typeof url === 'object') &&
+					typeof url.createObjectURL === 'function' &&
+					!this.useShimWorker;
 		},
 
 		_onMessage: function(data) {
