@@ -39,15 +39,9 @@ module.exports = function(grunt) {
 			dev: {
 				options: {
 					port: 8000,
-					base: 'src',
-					keepalive: true
-				}
-			},
-			prod: {
-				options: {
-					port: 8000,
-					base: 'bin',
-					keepalive: true
+					base: '.',
+					keepalive: true,
+					hostname: '0.0.0.0'
 				}
 			}
 		},
@@ -56,7 +50,8 @@ module.exports = function(grunt) {
 			all: {
 				src: [
 					'Gruntfile.js',
-					'src/**/*'
+					'src/**/*',
+					'tests/**/*'
 				],
 				options: {
 					newline: true,
