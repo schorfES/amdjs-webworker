@@ -56,7 +56,6 @@ define(function(require) {
 		_create: function() {
 			if(typeof this.task !== 'string') {
 				throw new Error('A Task must be provided as String.');
-				return;
 			}
 
 			if(this._supportsNativeWorkers()) {
