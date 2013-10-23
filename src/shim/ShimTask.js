@@ -21,13 +21,13 @@ define(function(require) {
 		/* ------------------------------------------------------------------ */
 
 		postMessage: function(data) {
-			this._bus.notify('message:'+ NAMESPACE_TASK, [
+			this._bus.notify('message:'+ NAMESPACE_TASK,
 				{
 					data: data,
 					type: 'message',
 					timeStamp: (new window.Date()).getTime()
 				}
-			]);
+			);
 		},
 
 		addEventListener: function(eventName, eventHandler) {
@@ -48,25 +48,31 @@ define(function(require) {
 
 		_createWorker: function() {
 			var
-				targetTag = window.document.getElementsByTagName('head'),
+				targetTag = window.document.body || window.document.getElementsByTagName('body')[0],
 				scriptTag = window.document.createElement('script'),
-				scriptSource = window.document.createTextNode(this._getFunctionSource())
+				scriptText = this._getFunctionSource(),
+				scriptTextNode = window.document.createTextNode(scriptText)
 			;
 
 			//Find correct target:
-			if(!targetTag || targetTag.length === 0) {
-				targetTag = window.document.getElementsByTagName('body');
-				if(!targetTag || targetTag.length === 0) {
+			if(!targetTag) {
+				targetTag = window.document.getElementsByTagName('head')[0] || window.document.documentElement;
+				if(!targetTag) {
 					throw new Error('There is no <head> or <body> inside the DOM.');
 				}
 			}
-			targetTag = targetTag[0];
 
 			//Build
+			targetTag.appendChild(scriptTag);
 			scriptTag.id = this._getFunctionName();
 			scriptTag.type = 'text/javascript';
-			scriptTag.appendChild(scriptSource);
-			targetTag.appendChild(scriptTag);
+
+			try {
+				scriptTag.appendChild(scriptTextNode);
+			} catch(error) {
+				//IE uses this case to inject text into a script tag:
+				scriptTag.text = scriptText;
+			}
 		},
 
 		_runWorker: function() {
@@ -85,7 +91,7 @@ define(function(require) {
 			//namespace. Overwrite the local variables of this function for the
 			//current context of this task (see _runWorker()):
 			return 'window.'+ this._getFunctionName() +' = function() {'+
-						'var window = self = this; '+
+						'var self = this; '+
 						this._source +
 					'};';
 		}
