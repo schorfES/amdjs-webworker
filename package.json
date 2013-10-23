@@ -1,0 +1,30 @@
+{
+  "name": "amdjs-webworker",
+  "version": "0.0.0",
+  "description": "A cross browser AMD module to run Web Workers",
+  "main": "Gruntfile.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/schorfES/amdjs-webworker.git"
+  },
+  "keywords": [
+    "AMD",
+    "AMDJS",
+    "WebWorker",
+    "Web",
+    "Worker",
+    "RequireJS"
+  ],
+  "author": "Norman Rusch",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/schorfES/amdjs-webworker/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.4.3",
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-lintspaces": "~0.2.203"
+  }
+}
