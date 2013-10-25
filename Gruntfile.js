@@ -10,7 +10,8 @@ module.exports = function(grunt) {
 		jshint: {
 			all: [
 				'Gruntfile.js',
-				'src/**/*.js'
+				'src/**/*.js',
+				'tests/**/*.js'
 			],
 			options: {
 				'boss': true,
@@ -38,7 +39,8 @@ module.exports = function(grunt) {
 		jscs: {
 			main: [
 				'Gruntfile.js',
-				'src/**/*.js'
+				'src/**/*.js',
+				'tests/**/*.js'
 			]
 		},
 
@@ -78,6 +80,7 @@ module.exports = function(grunt) {
 	// define tasks
 	grunt.registerTask('validate', [
 		'jshint',
+		'jscs',
 		'lintspaces'
 	]);
 
