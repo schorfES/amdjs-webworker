@@ -35,6 +35,13 @@ module.exports = function(grunt) {
 			}
 		},
 
+		jscs: {
+			main: [
+				'Gruntfile.js',
+				'src/**/*.js'
+			]
+		},
+
 		connect: {
 			dev: {
 				options: {
@@ -65,6 +72,7 @@ module.exports = function(grunt) {
 	// load tasks
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-jscs-checker');
 	grunt.loadNpmTasks('grunt-lintspaces');
 
 	// define tasks
