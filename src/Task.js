@@ -30,7 +30,7 @@ define(function(require) {
 		/* This function sends given data to the worker.
 		/* @param data is the data to be send. */
 		run: function(data) {
-			if(typeof this._worker === 'undefined') {
+			if (typeof this._worker === 'undefined') {
 				this._create();
 			}
 
@@ -56,11 +56,11 @@ define(function(require) {
 		},
 
 		_create: function() {
-			if(typeof this.task !== 'string') {
+			if (typeof this.task !== 'string') {
 				throw new Error('A Task must be provided as String.');
 			}
 
-			if(this._supportsNativeWorkers()) {
+			if (this._supportsNativeWorkers()) {
 				this._createNativeWorker();
 			} else {
 				this._createShimWorker();
@@ -95,7 +95,7 @@ define(function(require) {
 		},
 
 		_onMessage: function(data) {
-			if(typeof this.onmessage === 'function') {
+			if (typeof this.onmessage === 'function') {
 				this.onmessage(data);
 			}
 			this._bus.notify(Task.events.MESSAGE, data);

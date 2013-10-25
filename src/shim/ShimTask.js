@@ -21,7 +21,7 @@ define(function(require) {
 		/* ------------------------------------------------------------------ */
 
 		postMessage: function(data) {
-			this._bus.notify('message:'+ NAMESPACE_TASK,
+			this._bus.notify('message:' + NAMESPACE_TASK,
 				{
 					data: data,
 					type: 'message',
@@ -31,7 +31,7 @@ define(function(require) {
 		},
 
 		addEventListener: function(eventName, eventHandler) {
-			this._bus.on(eventName +':'+ NAMESPACE_WORKER, eventHandler);
+			this._bus.on(eventName + ':' + NAMESPACE_WORKER, eventHandler);
 		},
 
 		/* Private functions
@@ -55,9 +55,9 @@ define(function(require) {
 			;
 
 			//Find correct target:
-			if(!targetTag) {
+			if (!targetTag) {
 				targetTag = window.document.getElementsByTagName('head')[0] || window.document.documentElement;
-				if(!targetTag) {
+				if (!targetTag) {
 					throw new Error('There is no <head> or <body> inside the DOM.');
 				}
 			}
@@ -83,15 +83,15 @@ define(function(require) {
 		},
 
 		_getFunctionName: function() {
-			return NAMESPACE_TASK +''+ this._id;
+			return NAMESPACE_TASK + this._id.toString();
 		},
 
 		_getFunctionSource: function() {
 			//Generate a function of the webworker source code in the global
 			//namespace. Overwrite the local variables of this function for the
 			//current context of this task (see _runWorker()):
-			return 'window.'+ this._getFunctionName() +' = function() {'+
-						'var self = this; '+
+			return 'window.' + this._getFunctionName() + ' = function() {' +
+						'var self = this; ' +
 						this._source +
 					'};';
 		}

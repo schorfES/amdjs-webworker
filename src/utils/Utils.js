@@ -7,7 +7,7 @@ define(function() {
 	;
 
 	EventBus.prototype.on = function(eventName, eventHandler) {
-		if(!this._events[eventName]) {
+		if (!this._events[eventName]) {
 			this._events[eventName] = [];
 		}
 
@@ -17,11 +17,11 @@ define(function() {
 	EventBus.prototype.off = function(eventName, eventHandler) {
 		var index;
 
-		if(typeof this._events[eventName] === 'object') {
-			if(typeof eventHandler === 'function') {
+		if (typeof this._events[eventName] === 'object') {
+			if (typeof eventHandler === 'function') {
 				//Remove specific eventHandler
-				for(index = 0; index < this._events[eventName].length; index++) {
-					if(this._events[eventName][index] === eventHandler) {
+				for (index = 0; index < this._events[eventName].length; index++) {
+					if (this._events[eventName][index] === eventHandler) {
 						this._events[eventName].splice(index, 1);
 					}
 				}
@@ -36,13 +36,12 @@ define(function() {
 	EventBus.prototype.notify = function(eventName, eventData) {
 		var index;
 
-		if(typeof this._events[eventName] === 'object') {
-			for(index = 0; index < this._events[eventName].length; index++) {
+		if (typeof this._events[eventName] === 'object') {
+			for (index = 0; index < this._events[eventName].length; index++) {
 				this._events[eventName][index](eventData);
 			}
 		}
 	};
-
 
 	return {
 
@@ -56,11 +55,11 @@ define(function() {
 				source, key
 			;
 
-			if(typeof target === 'object' && arguments.length > 0) {
-				while(arguments.length > 0) {
+			if (typeof target === 'object' && arguments.length > 0) {
+				while (arguments.length > 0) {
 					source = window.Array.prototype.shift.call(arguments);
-					if(source) {
-						for(key in source) {
+					if (source) {
+						for (key in source) {
 							target[key] = source[key];
 						}
 					}
@@ -72,7 +71,7 @@ define(function() {
 
 		proxy: function(method, scope) {
 			return function() {
-				if(typeof method === 'function') {
+				if (typeof method === 'function') {
 					method.apply(scope, arguments);
 				}
 			};

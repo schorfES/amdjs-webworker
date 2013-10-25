@@ -16,11 +16,11 @@ define(function(require) {
 		/* ------------------------------------------------------------------ */
 
 		postMessage: function(data) {
-			this._bus.notify('message:'+ NAMESPACE_WORKER, {data: data});
+			this._bus.notify('message:' + NAMESPACE_WORKER, {data: data});
 		},
 
 		addEventListener: function(eventName, eventHandler) {
-			this._bus.on(eventName +':'+ NAMESPACE_TASK, eventHandler);
+			this._bus.on(eventName + ':' + NAMESPACE_TASK, eventHandler);
 		},
 
 		/* Private functions
