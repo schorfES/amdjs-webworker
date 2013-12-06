@@ -18,10 +18,10 @@
 					task: Worker
 				}),
 				supports = task._supportsNativeWorkers(),
-				supportsText = supports ? 'Web Worker' : 'Shim Worker'
+				supportsText = supports ? 'Supports Web Worker' : 'Will fallback to Shim Worker'
 			;
 
-			window.document.getElementById('type').innerHTML = supportsText;
+			window.document.getElementById('supports').innerHTML = supportsText;
 
 			asyncTest('worker result', 1, function() {
 				task.on('message', onMessage);
@@ -31,6 +31,12 @@
 					start();
 					equal(event.data, 2);
 					window.document.getElementById('output').innerHTML = event.data;
+
+					var
+						uses = task._usesNativeWorkers(),
+						usesText = uses ? 'Uses Web Worker' : 'Uses Shim Worker'
+					;
+					window.document.getElementById('uses').innerHTML = usesText;
 				}
 			});
 		}

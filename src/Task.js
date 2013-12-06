@@ -71,12 +71,36 @@ define(function(require) {
 		},
 
 		_createNativeWorker: function() {
-			var
-				url = window.URL || window.webkitURL,
-				blob = new window.Blob([this.task])
-			;
+			try {
+				var
+					url = this._getUrlObject(),
+					BlobClass = this._getBlobClass(),
+					WorkerClass = this._getWorkerClass(),
+					blob
+				;
 
-			this._worker = new window.Worker(url.createObjectURL(blob));
+				blob = new BlobClass([this.task], {type: 'text/javascript'});
+				this._worker = new WorkerClass(url.createObjectURL(blob));
+			} catch(error) {
+				this._createNativeWorkerByBlobbuilder();
+			}
+		},
+
+		_createNativeWorkerByBlobbuilder: function() {
+			try {
+				var
+					url = this._getUrlObject(),
+					BlobBuilderClass = this._getBlobBuilderClass(),
+					blobBuilder = new BlobBuilderClass(),
+					blob
+				;
+
+				blobBuilder.append(this.task);
+				blob = blobBuilder.getBlob();
+				this._worker = new window.Worker(url.createObjectURL(blob));
+			} catch(error) {
+				this._createShimWorker();
+			}
 		},
 
 		_createShimWorker: function() {
@@ -86,12 +110,41 @@ define(function(require) {
 		/* A feature detection for WebWorkers and other techniques to
 		/* get 'inline WebWorkes' working */
 		_supportsNativeWorkers: function() {
-			var url = window.URL || window.webkitURL;
-			return	window.Worker &&
-					window.Blob &&
+			var
+				url = this._getUrlObject(),
+				workerClass = this._getWorkerClass(),
+				blobClass = this._getBlobClass(),
+				blobBuilderClass = this._getBlobBuilderClass()
+			;
+
+			return	!this.useShimWorker &&
+					workerClass &&
+					(blobClass || blobBuilderClass) &&
 					(typeof url === 'function' || typeof url === 'object') &&
-					typeof url.createObjectURL === 'function' &&
-					!this.useShimWorker;
+					typeof url.createObjectURL === 'function';
+		},
+
+		_usesNativeWorkers: function() {
+			return this._worker !== undefined && !(this._worker instanceof ShimWorker);
+		},
+
+		_getWorkerClass: function() {
+			return window.Worker;
+		},
+
+		_getUrlObject: function() {
+			return window.webkitURL || window.URL;
+		},
+
+		_getBlobClass: function() {
+			return window.Blob;
+		},
+
+		_getBlobBuilderClass: function() {
+			return	window.WebKitBlobBuilder ||
+					window.MozBlobBuilder ||
+					window.MSBlobBuilder ||
+					window.BlobBuilder;
 		},
 
 		_onMessage: function(data) {
